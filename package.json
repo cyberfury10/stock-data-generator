@@ -2,12 +2,27 @@
   "name": "mock-stock-data",
   "version": "1.0.0",
   "description": "Mock share market data generator",
+  "keywords": [
+    "example",
+    "package",
+    "tutorial"
+  ],
+  "homepage": "https://github.com/jidu0106/mock-stock-data",
+  "bugs": {
+    "url": "https://github.com/jidu0106/mock-stock-data/issues",
+    "email": "balaji2525@gmail.com"
+  },
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
-  "author": "Bhalaji Nagarajan",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jidu0106/mock-stock-data.git"
+  },
+  "author": "Bhalaji Nagarajan <balaji2525@gmail.com>",
+  "license": "MIT",
+  "private": false,
   "devDependencies": {
     "jest": "^29.5.0"
   }
