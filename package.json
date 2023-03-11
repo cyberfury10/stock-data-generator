@@ -1,5 +1,5 @@
 {
-  "name": "mock-stock-data",
+  "name": "mock-stock-data-generator",
   "version": "1.0.0",
   "description": "Mock share market data generator",
   "keywords": [
