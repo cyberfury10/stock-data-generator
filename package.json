@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "Mock share market data generator",
   "keywords": [
-    "example",
-    "package",
-    "tutorial"
+    "mock data",
+    "share",
+    "fake",
+    "data generator",
+    "candle stick data",
+    "stock"
   ],
   "homepage": "https://github.com/jidu0106/mock-stock-data",
   "bugs": {
