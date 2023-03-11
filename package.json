@@ -1,0 +1,14 @@
+{
+  "name": "mock-stock-data",
+  "version": "1.0.0",
+  "description": "Mock share market data generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Bhalaji Nagarajan",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
+}
