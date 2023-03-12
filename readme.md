@@ -1,12 +1,14 @@
-<span style="color:red"> **Note - This is just program which generates random price data based on the parameters provided. Real-world stock market data is much more complex and involves many more factors than just random fluctuations. Use it at your own discretion** </span>
+<span style="color:red"> **Note - This is just a program which generates random price data based on the parameters provided. Real-world stock market data is much more complex and involves many more factors than just random fluctuations. Use it at your own discretion** </span>
 
 This library exposes Two methods
+
 |Method |
 | --- | 
 | generateRandomFlatData(config) |
 | generateCandleStickData(config, interval) |
 
 Config
+
 | Key |  sample value |value | required|
 | --- | --- | --- | --- |
 |startDateTime | "2000-01-01T09:15:00.000Z" |Date string | required|
@@ -14,15 +16,17 @@ Config
 | noOfDays | 8 | Number of days |required|
 | tradeHoursPerDay| 6 | Number of trading hours | required|
 | changeBy| 0.05 |Share's minimum price change | required|
-|maxDailyChangePercent|  { min: 1.5, max: 3.5} | Expects a range, between which day's change would be picked by random | optional (when skipped range becomes random) |
+|maxDailyChangePercent|  { min: 1.5, max: 3.5} | Expects a range, between which, a day's change would be picked by random, with sample value a day's change would be something like 1.6%, 2.4%, 3.1% etc., | optional (when skipped range becomes random) |
 
 More Description
+
 | Key |  sample value |value |
 | --- | --- | --- |
 | changeBy| 0.05 |  This is kind of minimum step change, lets say if price is $10 considering 0.05 sample value $10.05, $10.10 are valid increments and decrements | 
 | maxDailyChangePercent | { min: 1.5, max: 3.5} | Expects a range, between which day's change would be picked by random |
 
 Interval param for  ``` generateCandleStickData(config, interval) ```
+
 | Interval | Description|
 | --- | --- |
 | 1m | 1 minute |
@@ -33,6 +37,7 @@ Interval param for  ``` generateCandleStickData(config, interval) ```
 | 1d | 1 day |
 
 Example:
+
 ```
 const { generateRandomFlatData, generateCandleStickData } = require("mock-stock-data")
 
