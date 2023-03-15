@@ -183,3 +183,14 @@ describe("Test date in generateCandleStickData", () => {
     }
   })
 })
+
+
+describe("Running tests for generateCandleStickData with flatData", () => {
+  const flatData = generateRandomFlatData(config)
+  const result = generateCandleStickData(config, "1m", flatData)
+
+  test("Test count", () => {
+    const count = (60 / 1) * config.tradeHoursPerDay * config.noOfDays
+    expect(result.length).toBe(count)
+  })
+})

@@ -39,7 +39,7 @@ Interval param for  ``` generateCandleStickData(config, interval) ```
 Example:
 
 ```
-const { generateRandomFlatData, generateCandleStickData } = require("mock-stock-data")
+const { generateRandomFlatData, generateCandleStickData } = require("stock-data-generator")
 
 // sample config object
 const config = {

@@ -1,4 +1,11 @@
-const { p, differenceByPercentage, getRandomStep, randomIntFromInterval, validateConfig } = require("./util")
+const {
+  p,
+  differenceByPercentage,
+  getRandomStep,
+  randomIntFromInterval,
+  validateConfig,
+  isNilOrEmpty,
+} = require("./util")
 
 /**
  * Just pass in the config and generates seconds wise data for entire duration
@@ -98,10 +105,16 @@ function generateCandleStickData(config, interval = "1m", flatData = undefined) 
     default:
       durationInSeconds = 60
   }
+  let chunkSize = durationInSeconds
+
   if (flatData === undefined) {
     flatData = generateRandomFlatData(config)
   }
-  const chunkSize = durationInSeconds
+
+  if (flatData.length < durationInSeconds) {
+    chunkSize = flatData.length
+  }
+
   const candleStickData = []
   for (let i = 0; i < flatData.length; i += chunkSize) {
     const chunk = flatData.slice(i, i + chunkSize)

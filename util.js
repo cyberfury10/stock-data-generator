@@ -33,10 +33,25 @@ function validateConfig({ noOfDays, changeBy, startPrice }) {
     throw new Error("startPrice cannnot be 0 or undefined")
   }
 }
+
+function isNilOrEmpty(arr) {
+  if (arr === undefined) {
+    return true
+  }
+  if (arr === null) {
+    return true
+  }
+  if (arr.length === 0) {
+    return true
+  }
+  return false
+}
+
 module.exports = {
   p,
   differenceByPercentage,
   getRandomStep,
   randomIntFromInterval,
   validateConfig,
+  isNilOrEmpty,
 }
