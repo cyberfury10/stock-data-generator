@@ -68,7 +68,6 @@ console.log(randomFlatData)
 //   { date: 2000-01-01T09:15:05.000Z, price: 179.95 },
 //   ...
 // ]
-```
 
 // accepted interval = 1m, 5m 15m 30m 1h 1d
 const result = generateCandleStickData(config, "5m")
@@ -90,3 +89,4 @@ console.log(result)
 //   },
 //   ...
 // ]
+```
