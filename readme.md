@@ -5,7 +5,7 @@ This library exposes Two methods
 |Method |
 | --- | 
 | generateRandomFlatData(config) |
-| generateCandleStickData(config, interval) |
+| generateCandleStickData(config, interval, flatData (optional)) |
 
 Config
 
@@ -54,8 +54,26 @@ const config = {
   }, // Daily percentage of stock, in this case share price can vary from 1.5% to 3.5%
 }
 
+const randomFlatData = generateRandomFlatData(config)
+// prints seconds wise price change
+console.log(randomFlatData)
+
+// Sample output
+// [
+//   { date: 2000-01-01T09:15:00.000Z, price: 180 },
+//   { date: 2000-01-01T09:15:01.000Z, price: 179.95 },
+//   { date: 2000-01-01T09:15:02.000Z, price: 179.9 },
+//   { date: 2000-01-01T09:15:03.000Z, price: 179.9 },
+//   { date: 2000-01-01T09:15:04.000Z, price: 179.9 },
+//   { date: 2000-01-01T09:15:05.000Z, price: 179.95 },
+//   ...
+// ]
+```
+
 // accepted interval = 1m, 5m 15m 30m 1h 1d
 const result = generateCandleStickData(config, "5m")
+or
+const result = generateCandleStickData(config, "5m", randomFlatData)
 
 // prints the candle stick data with given interval
 console.log(result)
@@ -72,20 +90,3 @@ console.log(result)
 //   },
 //   ...
 // ]
-
-
-const randomFlatData = generateRandomFlatData(config)
-// prints seconds wise price change
-console.log(randomFlatData)
-
-// Sample output
-// [
-//   { date: 2000-01-01T09:15:00.000Z, price: 180 },
-//   { date: 2000-01-01T09:15:01.000Z, price: 179.95 },
-//   { date: 2000-01-01T09:15:02.000Z, price: 179.9 },
-//   { date: 2000-01-01T09:15:03.000Z, price: 179.9 },
-//   { date: 2000-01-01T09:15:04.000Z, price: 179.9 },
-//   { date: 2000-01-01T09:15:05.000Z, price: 179.95 },
-//   ...
-// ]
-```

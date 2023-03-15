@@ -74,7 +74,7 @@ function generateRandomFlatData(config) {
  * 1h
  * 1d
  */
-function generateCandleStickData(config, interval = "1m") {
+function generateCandleStickData(config, interval = "1m", flatData = undefined) {
   let durationInSeconds = 0
   switch (interval) {
     case "1m":
@@ -98,7 +98,9 @@ function generateCandleStickData(config, interval = "1m") {
     default:
       durationInSeconds = 60
   }
-  const flatData = generateRandomFlatData(config)
+  if (flatData === undefined) {
+    flatData = generateRandomFlatData(config)
+  }
   const chunkSize = durationInSeconds
   const candleStickData = []
   for (let i = 0; i < flatData.length; i += chunkSize) {
