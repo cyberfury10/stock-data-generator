@@ -15,8 +15,9 @@ Config
 | startPrice | 180|start price of the stock | required|
 | noOfDays | 8 | Number of days |required|
 | tradeHoursPerDay| 6 | Number of trading hours | required|
-| changeBy| 0.05 |Share's minimum price change | required|
-|maxDailyChangePercent|  { min: 1.5, max: 3.5} | Expects a range, between which, a day's change would be picked by random, with sample value a day's change would be something like 1.6%, 2.4%, 3.1% etc., | optional (when skipped range becomes random) |
+| changeBy| 0.05 |Share's minimum price change (per day)| required|
+|maxDailyChangePercent|  {min: 1.5, max: 3.5} | Expects a range, between which, a day's change would be picked by random, with sample value a day's change would be something like 1.6%, 2.4%, 3.1% etc., | optional (when skipped range becomes random) |
+|volumeRange|{min: 10000, max:10000}|Expects a range, between which, a day's change would be picked by random|optional (when skipped results will not include volume)
 
 More Description
 
@@ -24,6 +25,7 @@ More Description
 | --- | --- | --- |
 | changeBy| 0.05 |  This is kind of minimum step change, lets say if price is $10 considering 0.05 sample value $10.05, $10.10 are valid increments and decrements | 
 | maxDailyChangePercent | { min: 1.5, max: 3.5} | Expects a range, between which day's change would be picked by random |
+| volumeRange | {min: 10000, max:10000} | A random value will be picked in the provided range, and it is a daily volume. i.e., summation of volume by date in the candle stick data will fall with in the range  |
 
 Interval param for  ``` generateCandleStickData(config, interval) ```
 

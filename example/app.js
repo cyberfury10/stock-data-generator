@@ -10,10 +10,14 @@ const config = {
     min: 1.5,
     max: 3.5,
   }, // Daily percentage of stock, in this case share price can vary from 1.5% to 3.5%
+  volumeRange: {
+    min: 30000,
+    max: 31000
+  }, // VolumeRange is optional, if range is not provided then volume will be skipped from candle stick results
 }
 
 // accepted interval = 1m, 5m 15m 30m 1h 1d
-const result = generateCandleStickData(config, "5m")
+const result = generateCandleStickData(config, "1h")
 
 // prints the candle stick data with given interval
 console.log(result)

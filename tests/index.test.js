@@ -12,6 +12,22 @@ const config = {
   }, // percentage
 }
 
+const configWithVolume = {
+  startDateTime: "2000-01-01T09:15:00.000Z",
+  startPrice: 180, // price
+  noOfDays: 3, // days
+  tradeHoursPerDay: 6,
+  changeBy: 0.05, // share's minimum price change
+  maxDailyChangePercent: {
+    min: 1.5,
+    max: 3.5,
+  }, // percentage
+  volumeRange: {
+    min: 30000,
+    max: 31000
+  }
+}
+
 describe("Running tests for generateRandomFlatData", () => {
   const result = generateRandomFlatData(config)
 
@@ -22,34 +38,79 @@ describe("Running tests for generateRandomFlatData", () => {
 })
 
 describe("Running tests for generateCandleStickData count", () => {
+  function assertLength(candleStickData, duration) {
+    const count = (60 / duration) * configWithVolume.tradeHoursPerDay * configWithVolume.noOfDays
+    expect(candleStickData.length).toBe(count)
+  }
   test("Test count for 1m", () => {
     const result = generateCandleStickData(config, "1m")
-    const count = (60 / 1) * config.tradeHoursPerDay * config.noOfDays
-    expect(result.length).toBe(count)
+    assertLength(result, 1)
   })
   test("Test count for 5m", () => {
     const result = generateCandleStickData(config, "5m")
-    const count = (60 / 5) * config.tradeHoursPerDay * config.noOfDays
-    expect(result.length).toBe(count)
+    assertLength(result, 5)
   })
   test("Test count for 15m", () => {
     const result = generateCandleStickData(config, "15m")
-    const count = (60 / 15) * config.tradeHoursPerDay * config.noOfDays
-    expect(result.length).toBe(count)
+    assertLength(result, 15)
   })
   test("Test count for 30m", () => {
     const result = generateCandleStickData(config, "30m")
-    const count = (60 / 30) * config.tradeHoursPerDay * config.noOfDays
-    expect(result.length).toBe(count)
+    assertLength(result, 30)
   })
   test("Test count for 1h", () => {
     const result = generateCandleStickData(config, "1h")
-    const count = (60 / 60) * config.tradeHoursPerDay * config.noOfDays
-    expect(result.length).toBe(count)
+    assertLength(result, 60)
   })
   test("Test count for 1d", () => {
     const result = generateCandleStickData(config, "1d")
     const count = config.noOfDays
+    expect(result.length).toBe(count)
+  })
+})
+
+describe("Running tests for generateCandleStickData with volumes", () => {
+  function assertVolumeCount(candleStickData) {
+    const volumeCount = getDateWiseVolumeCount(candleStickData)
+    for (const date in volumeCount) {
+      expect(volumeCount[date]).toBeLessThanOrEqual(configWithVolume.volumeRange.max)
+      expect(volumeCount[date]).toBeGreaterThanOrEqual(configWithVolume.volumeRange.min)
+    }
+  }
+
+  function assertLength(candleStickData, duration) {
+    const count = (60 / duration) * configWithVolume.tradeHoursPerDay * configWithVolume.noOfDays
+    expect(candleStickData.length).toBe(count)
+  }
+
+  test("Test count for 1m", () => {
+    const result = generateCandleStickData(configWithVolume, "1m")
+    assertLength(result, 1)
+    assertVolumeCount(result)
+  })
+  test("Test count for 5m", () => {
+    const result = generateCandleStickData(configWithVolume, "5m")
+    assertLength(result, 5)
+    assertVolumeCount(result)
+  })
+  test("Test count for 15m", () => {
+    const result = generateCandleStickData(configWithVolume, "15m")
+    assertLength(result, 15)
+    assertVolumeCount(result)
+  })
+  test("Test count for 30m", () => {
+    const result = generateCandleStickData(configWithVolume, "30m")
+    assertLength(result, 30)
+    assertVolumeCount(result)
+  })
+  test("Test count for 1h", () => {
+    const result = generateCandleStickData(configWithVolume, "1h")
+    assertLength(result, 60)
+    assertVolumeCount(result)
+  })
+  test("Test count for 1d", () => {
+    const result = generateCandleStickData(configWithVolume, "1d")
+    const count = configWithVolume.noOfDays
     expect(result.length).toBe(count)
   })
 })
@@ -176,7 +237,7 @@ describe("Test date in generateCandleStickData", () => {
 
   test("Validate % of percentage change", () => {
     const result = generateCandleStickData(config, "1d")
-    
+
     for (const item of result) {
       expect(item.change).toBeLessThan(3.51)
       expect(item.change).toBeGreaterThan(1.49)
@@ -194,3 +255,15 @@ describe("Running tests for generateCandleStickData with flatData", () => {
     expect(result.length).toBe(count)
   })
 })
+
+function getDateWiseVolumeCount(candleStickData) {
+  const volumeCount = {}
+  for (const item of candleStickData) {
+    const date = item.dateTime.toISOString().substring(0, 10)
+    if (volumeCount[date] === undefined) {
+      volumeCount[date] = 0
+    }
+    volumeCount[date] += item.volume
+  }
+  return volumeCount
+}

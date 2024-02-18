@@ -3,8 +3,9 @@ const {
   differenceByPercentage,
   getRandomStep,
   randomIntFromInterval,
+  generateRandomSplit,
   validateConfig,
-  isNilOrEmpty,
+  isNil,
 } = require("./util")
 
 /**
@@ -65,10 +66,6 @@ function generateRandomFlatData(config) {
         price: p(price),
       })
     }
-    // const rr = p(differenceByPercentage(low, high))
-    // if (!(rr > 1.5 && rr < 4.5)) {
-    //   console.log(day, p(low), p(high), p(differenceByPercentage(low, high)))
-    // }
   }
   return result
 }
@@ -82,43 +79,72 @@ function generateRandomFlatData(config) {
  * 1d
  */
 function generateCandleStickData(config, interval = "1m", flatData = undefined) {
+  const hasVolumeConfig = !isNil(config.volumeRange)
+  if (flatData === undefined) {
+    flatData = generateRandomFlatData(config)
+  }
+  let perDayChunk = 0
   let durationInSeconds = 0
   switch (interval) {
     case "1m":
       durationInSeconds = 60
+      perDayChunk = config.tradeHoursPerDay * 60
       break
     case "5m":
       durationInSeconds = 60 * 5
+      perDayChunk = config.tradeHoursPerDay * 12
       break
     case "15m":
       durationInSeconds = 60 * 15
+      perDayChunk = config.tradeHoursPerDay * 4
       break
     case "30m":
       durationInSeconds = 60 * 30
+      perDayChunk = config.tradeHoursPerDay * 2
       break
     case "1h":
       durationInSeconds = 60 * 60
+      perDayChunk = config.tradeHoursPerDay
       break
     case "1d":
       durationInSeconds = 60 * 60 * config.tradeHoursPerDay
+      perDayChunk = 1
       break
     default:
       durationInSeconds = 60
+      perDayChunk = config.tradeHoursPerDay / 60
   }
-  let chunkSize = durationInSeconds
 
-  if (flatData === undefined) {
-    flatData = generateRandomFlatData(config)
-  }
+  let chunkSize = durationInSeconds
+  perDayChunk *= chunkSize
 
   if (flatData.length < durationInSeconds) {
     chunkSize = flatData.length
   }
 
+  let volumes = null
+  let dailyVolume = null
   const candleStickData = []
-  for (let i = 0; i < flatData.length; i += chunkSize) {
+  for (let i = 0, j = 0; i < flatData.length; i += chunkSize) {
+
+
     const chunk = flatData.slice(i, i + chunkSize)
     const data = constructCandleStickData(chunk)
+
+    // if chunkSize is greater than perDayChunk then reset the j
+    // so that we can generate new volume for the next day
+    if ((j * chunkSize) === perDayChunk) {
+      j = 0
+    }
+    if (hasVolumeConfig) {
+      if (j === 0) {
+        dailyVolume = randomIntFromInterval(config.volumeRange.min, config.volumeRange.max, 0)
+        volumes = generateRandomSplit(dailyVolume, perDayChunk / chunkSize)
+      }
+      data.volume = volumes[j]
+      j++
+    }
+
     candleStickData.push(data)
   }
   return candleStickData
